@@ -143,10 +143,12 @@
                                 </div>
                             </td>
                             <td class="flex justify-center items-center h-full">
-                                <button @click="emitRowId(row)" type="button" :class="[
-                                    `text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800`,
+                                <button @click="handleClick(row)" type="button" :class="[
+                                    'text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800',
                                     `${columns[columns.length - 1]?.isShowing ? 'block' : 'hidden'}`
-                                ]">VER</button>
+                                ]">
+                                    Acción
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -220,7 +222,10 @@ const props = defineProps({
     savedPDFs: {
         type: Object,
         required: false
-    }
+    },
+
+    row: Object,
+    action: Function,
 
 })
 
@@ -329,7 +334,7 @@ const getPaginationArray = (arrProp: number) => {
 //////////////////
 import { defineEmits } from 'vue';
 
-const emit = defineEmits(['updateRow', 'openModal', 'viewPDF','openDefensaModal']);
+const emit = defineEmits(['updateRow', 'openModal', 'viewPDF', 'openDefensaModal']);
 
 const emitRowId = (row: any) => {
     const emitId = row.cedula || row.numero || Object.values(row)[0];
@@ -337,6 +342,17 @@ const emitRowId = (row: any) => {
 };
 
 
+
+
+
+const handleClick = (row: any) => {
+    if (props.action) {
+        props.action(row);
+    } else {
+        const emitId = row.cedula || row.numero || Object.values(row)[0];
+        emit('updateRow', emitId);
+    }
+};
 
 
 
