@@ -3,4 +3,5 @@ export interface LoginResponseDto {
     nombre?:  string;
     rolId?:   number;
     message?: string;
+    usuId?:number;
 }

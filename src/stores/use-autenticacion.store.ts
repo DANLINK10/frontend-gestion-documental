@@ -7,6 +7,7 @@ export const useAutenticacionStore = defineStore(
         const loginStatus = ref(false)
         const nombre = ref('')
         const rolId = ref(-1)
+        const usuId = ref(-1)
 
         const showModal = ref(false)
         const messageError = ref('')
@@ -18,11 +19,13 @@ export const useAutenticacionStore = defineStore(
             success: boolean,
             nombreParam?: string,
             rolIdParam?: number,
-            message?: string
+            message?: string,
+            usuIdR?:number
         ) => {
             if (success === true) {
                 loginStatus.value = true
                 nombre.value = nombreParam ? nombreParam : ''
+                usuId.value = usuIdR ? usuIdR : -1
                 rolId.value = rolIdParam ? rolIdParam : -1
                 messageError.value = ''
                 titleError.value = ''
@@ -60,6 +63,7 @@ export const useAutenticacionStore = defineStore(
             loginStatus,
             nombre,
             rolId,
+            usuId,
             showModal,
             messageError,
             titleError,

@@ -1,22 +1,24 @@
-<!-- TitulacionPage.vue -->
 <template>
   <DashboardLayout>
     <div>
+      <!-- Encabezado para la primera tabla -->
       <h3 class="text-2xl font-bold text-gray-800 mb-4">Titulación Carreras</h3>
-      <DataDemo :data="myData" @updateRow="handleView" @openModal="handleOpenModal"
+
+      <!-- Primera tabla -->
+      <div v-if="isLoading">Loading...</div>
+      <div v-if="error">Error: {{ error.message }}</div>
+      <DataDemo v-if="data" :data="query.data.value" @updateRow="handleView" @openModal="handleOpenModal"
         @openDefensaModal="handleOpenDefensaModal" />
+
+
+      <!-- Mostrar la segunda tabla si showSecondTable es verdadera -->
+      <div v-if="showSecondTable">
+        <DataDemo :data="dataTitulo" :savedPDFs="savedPDFs" @openModal="handleOpenModal" @viewPDF="viewPDF"
+          :action="navigateToPage" @openDefensaModal="handleOpenDefensaModal" />
+      </div>
     </div>
 
-    <!-- segunda tabla -->
-    <h3 class="text-2xl font-bold text-gray-800 mb-4">Titulación:</h3>
-    <div v-if="showDataDemo">
-      <button @click="openModal"
-        class="px-3 py-0 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out">
-        Agregar
-      </button>
-      <DataDemo :data="dataTitulo" :savedPDFs="savedPDFs" @openModal="handleOpenModal" @viewPDF="viewPDF" :action="navigateToPage"
-        @openDefensaModal="handleOpenDefensaModal" />
-    </div>
+    <!-- Modales -->
     <CreateTitulacionModal :show="showModal" @close="closeModal" @save="saveStudent" />
     <CreateInformeModal :show="showInformeModal" :data="selectedRowData" @close="closeInformeModal"
       @save="saveInforme" />
@@ -32,15 +34,24 @@ import DataDemo from '../components/DataDemo.vue';
 import CreateTitulacionModal from '../components/CreateTitulacionModal.vue';
 import CreateInformeModal from '../components/CreateInformeModal.vue';
 import CreateRegistroDefensaModal from '../components/CreateRegistroDefensaModal.vue';
-import { myData, dataTitulo } from '../dto/myData';
+import { dataTitulo } from '../dto/myData';
 import router from '@/router';
 
-const showDataDemo = ref(false);
 const showModal = ref(false);
 const showInformeModal = ref(false);
 const showDefensaModal = ref(false);
 const selectedRowData = ref(null);
+const showSecondTable = ref(false); // Nueva variable de estado
 
+// Obtener el id del login
+import { useGetTitulacion } from '../composables/useTitulacion';
+import { useAutenticacionStore } from '@/stores/use-autenticacion.store';
+const userStore = useAutenticacionStore();
+const usuId = userStore.usuId;
+const query = useGetTitulacion(usuId);
+const { data, error, isLoading } = useGetTitulacion(usuId);
+
+// Abrir y cerrar modales
 const openModal = () => {
   showModal.value = true;
 };
@@ -51,7 +62,6 @@ const closeModal = () => {
 
 const saveStudent = (newStudent: any) => {
   console.log('Estudiante guardado:', newStudent);
-  // Aquí puedes agregar la lógica para guardar el estudiante
 };
 
 const handleView = (emitId: number) => {
@@ -60,9 +70,9 @@ const handleView = (emitId: number) => {
 
   if (row) {
     console.log('Datos recibidos:', row);
-    showDataDemo.value = true;
+    showSecondTable.value = true; // Muestra la segunda tabla
   } else {
-    showDataDemo.value = false;
+    showSecondTable.value = false; // Oculta la segunda tabla si no hay datos
   }
 };
 
@@ -111,7 +121,8 @@ const viewPDF = (pdfContent: string) => {
 const navigateToPage = (row: any) => {
   const id = row.numero || row.cedula;
   router.push(`/titulacion-detalle-ver/${id}`);
-
 };
 
 </script>
+
+<style scoped></style>

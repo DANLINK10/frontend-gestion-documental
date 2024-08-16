@@ -86,14 +86,14 @@ const password = ref<string>();
 
 const submit = async () => {
     try {
-        const { success, nombre, rolId, message } = await query.mutateAsync(
+        const { success, nombre, rolId,usuId, message } = await query.mutateAsync(
             { 
                 username: username.value, 
                 password: password.value 
             }
         )
         if(query.isSuccess && success) {
-            store.onLogginSuccess(success, nombre, rolId, message)
+            store.onLogginSuccess(success, nombre, rolId, message, usuId)
             router.push({ name: 'dashboard', replace: true })
         }
     } catch (error) {
