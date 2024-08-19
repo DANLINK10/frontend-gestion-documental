@@ -12,3 +12,4 @@ export const useGetTitulacion = (usuId: number) => {
   })
   return query;
 }
+

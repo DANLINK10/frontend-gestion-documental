@@ -1,18 +1,4 @@
 <template>
-    <!-- <div v-if="isPending" class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div role="status" class="flex items-center justify-center">
-            <svg aria-hidden="true" class="w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08199 50.5908C9.08199 73.3884 27.2023 91.5088 50 91.5088C72.7977 91.5088 90.918 73.3884 90.918 50.5908C90.918 27.7932 72.7977 9.67288 50 9.67288C27.2023 9.67288 9.08199 27.7932 9.08199 50.5908Z"
-                    fill="currentColor" />
-                <path
-                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5531C95.2932 28.8228 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7235 75.2124 7.41289C69.5422 4.10227 63.2754 1.94025 56.7082 1.05117C51.7666 0.367499 46.7353 0.446843 41.8303 1.27873C39.3616 1.69328 37.9242 4.19778 38.5605 6.62326C39.1968 9.04874 41.673 10.4711 44.143 10.1075C47.852 9.53988 51.6361 9.61436 55.2878 10.3178C60.8788 11.3881 66.1387 13.634 70.6331 16.9043C75.1275 20.1747 78.7314 24.3748 81.188 29.192C83.0332 32.6002 84.4328 36.2577 85.3465 40.0429C85.9302 42.3678 88.4543 43.6781 90.88 43.0409Z"
-                    fill="currentFill" />
-            </svg>
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div> -->
     <div>
         <div class="flex">
             <!-- Input de busqueda -->
@@ -118,11 +104,10 @@
                                 </div>
                             </th>
                             <th>
-                                <button @click="emitRowId(row)" type="button"
-                                    :class="[
-                                        `text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 m-auto dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800`,
-                                        `${columns[columns.length - 1].isShowing ? 'block' : 'hidden'}`
-                                    ]">Editar</button>
+                                <button @click="emitRowId(row)" type="button" :class="[
+                                    `text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 m-auto dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800`,
+                                    `${columns[columns.length - 1].isShowing ? 'block' : 'hidden'}`
+                                ]">Editar</button>
                             </th>
                         </tr>
                     </tbody>
@@ -196,41 +181,10 @@ const props = defineProps({
 
 const searchFilter = ref<string>('');
 
-// const filteredItems = computed(() => {
-//     const rowsToShow = props.data ? props.data : [];
-//     let items = rowsToShow;
-
-//     return items.filter((item: any, index) => {
-//         const withinRange = index >= (currentPage.value - 1) * rowsPerPage.value &&
-//             index < currentPage.value * rowsPerPage.value;
-
-//         const matchesSearch = Object.values(item).some((value: any) => {
-//             return value.toString().toLowerCase().includes(searchFilter.value.toLowerCase());
-//         });
-
-//         return matchesSearch && withinRange;
-//     });
-// });
-
 const filteredItems = computed(() => {
-    // const rowsToShow: any[] = props.data ? props.data : [];
-    
-    // // Filtrar la data completa primero
-    // let items = rowsToShow.filter((item) => {
-    //     return Object.values(item).some((value: any) => {
-    //         return value.toString().toLowerCase().includes(searchFilter.value.toLowerCase());
-    //     });
-    // });
-
-    // // Luego aplicar la paginación
-    // return items.filter((item, index) => {
-    //     const withinRange = index >= (currentPage.value - 1) * rowsPerPage.value &&
-    //         index < currentPage.value * rowsPerPage.value;
-    //     return withinRange;
-    // });
     
     const rowsToShow: any[] = props.data ? props.data : [];
-    
+
     // Filtrar la data completa primero
     let items = rowsToShow.filter((item) => {
         return Object.values(item).some((value: any) => {
@@ -310,7 +264,7 @@ const showingNumberEndRowsCurrentPage = computed(() => {
 })
 
 const getPaginationArray = (arrProp: number) => {
-    const arr = Array.from({length: arrProp}, (_, i) => i+ 1)
+    const arr = Array.from({ length: arrProp }, (_, i) => i + 1)
     const maxLength = 7; // Maximum length of the output array
     const selectedIndex = arr.indexOf(currentPage.value);
 
