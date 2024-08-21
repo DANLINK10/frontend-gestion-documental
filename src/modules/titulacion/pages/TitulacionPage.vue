@@ -1,4 +1,3 @@
-<!-- TitulacionPage.vue -->
 <template>
   <DashboardLayout>
     <div>
@@ -6,15 +5,22 @@
       <h3 class="text-2xl font-bold text-gray-800 mb-4">Titulación Carreras</h3>
 
       <!-- Primera tabla -->
-      <div v-if="isLoading">Loading...</div>
-      <div v-if="error">Error: {{ error.message }}</div>
-      <DataDemo v-if="data" :titulacionData="data" @showDetails="handleShowDetails" />
+   
+      <DataDemo v-if="query.isSuccess" :titulacionData="query.data.value" @showDetails="mostrarDetalles" />
 
-      <!-- Segunda tabla -->
-      <div>
-        <div v-if="isLoading">Loading...</div>
-        <div v-if="error">Error: {{ error.message }}</div>
-        <DataTableCarreras v-if="selectedCarId" :carId="selectedCarId" />
+      <!-- Muestra los detalles de la carrera seleccionada aquí si es necesario -->
+      <div class="flex items-center space-x-2">
+        <p class="text-2xl font-bold text-gray-800">Titulación:</p>
+        <p v-if="carreraSeleccionada" class="text-2xl font-bold text-gray-800">
+          {{ carreraSeleccionada.CAR_NOMBRE }}
+        </p>
+        <p v-if="!carreraSeleccionada" class="text-2xl text-gray-500">
+          No hay carrera seleccionada.
+        </p>
+      </div>
+      <!-- Segunda tabla, usando una key para forzar la recreación -->
+      <div v-if="selectedCarId !== null && selectedCarId > 0">
+        <DataTableCarreras :key="selectedCarId" :carId="selectedCarId" />
       </div>
     </div>
   </DashboardLayout>
@@ -27,20 +33,22 @@ import DataTableCarreras from '../components/DataTableCarreras.vue';
 import { useGetTitulacion } from '../composables/useTitulacion';
 import { useAutenticacionStore } from '@/stores/use-autenticacion.store';
 import { ref } from 'vue';
+// import type { EstudianteCarreraResponseType } from '../types/estudiantesCarrera';
+import type { TitulacionResposeType } from '../types/titulacion';
 
-// Get user ID from store
 const userStore = useAutenticacionStore();
 const usuId = userStore.usuId;
+const query = useGetTitulacion(usuId);
 
-// Fetch data using composable
-const { data, error, isLoading } = useGetTitulacion(usuId);
+const carreraSeleccionada = ref<TitulacionResposeType>();  // Inicialmente no hay carrera seleccionada
+const selectedCarId = ref<number | null>(null);  // Inicialmente no hay ningún ID seleccionado
 
-// Reactive variable to store the selected CAR_ID
-const selectedCarId = ref<number | null>(null);
-
-// Handle the event from DataDemo.vue
-const handleShowDetails = (carId: number) => {
-  selectedCarId.value = carId;
+const mostrarDetalles = (id: number) => {
+  if (query.data.value) {
+    console.log("mostrar detalles:", id, query.data.value)
+    carreraSeleccionada.value = query.data.value.find(carrera => carrera.CAR_ID === id);
+    selectedCarId.value = id;  // Actualiza el ID de la carrera seleccionada
+  }
 };
 </script>
 

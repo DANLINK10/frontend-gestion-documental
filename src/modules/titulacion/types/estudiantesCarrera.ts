@@ -1,4 +1,5 @@
 export interface EstudianteCarreraResponseType {
+
     TITU_ID:                     number;
     TITU_CEDULA:                 string;
     TITU_NOMBRES:                string;

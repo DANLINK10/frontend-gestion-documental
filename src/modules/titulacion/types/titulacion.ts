@@ -1,6 +1,6 @@
 export interface TitulacionResposeType {   
-    CAR_ID:             number;
     CAR_NOMBRE:         string;
+    CAR_ID:             number;
     CAR_CARRERA:        number;
     CAR_ACTIVA:         string;
     CAR_ESCUELA:        number;
