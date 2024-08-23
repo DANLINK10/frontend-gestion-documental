@@ -9,15 +9,16 @@ const router = createRouter({
     ...autenticacionRoutes,
     ...dashboardRoutes,
     {
+      path: '/titulacion-detalle-ver/',
+      name: 'TitulacionDetalleVer',
+      component: TitulacionDetalleVer
+    },
+    {
       path: '/:catchAll(.*)',
       name: 'not-found',
       component: () => import('../components/ui/NotFoundComponent.vue')
     },
-    {
-      path: '/titulacion-detalle-ver/:id',
-      name: 'TitulacionDetalleVer',
-      component: TitulacionDetalleVer
-    }
+    
   ]
 })
 

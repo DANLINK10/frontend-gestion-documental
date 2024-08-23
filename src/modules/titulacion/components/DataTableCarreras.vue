@@ -61,7 +61,8 @@
                 <tbody>
                     <tr v-for="(item, index) in paginatedUsers" :key="index"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ showingNumberStartRowsCurrentPage + index 
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+                            showingNumberStartRowsCurrentPage + index
                             }}</td>
                         <td class="px-4 py-2">{{ item.TITU_CEDULA }}</td>
                         <td class="px-4 py-2">{{ item.TITU_NOMBRES }}</td>
@@ -72,7 +73,7 @@
                         <td class="px-4 py-2">{{ item.TITU_SIMILITUD_INF }}</td>
                         <td class="px-4 py-2">{{ item.TITU_ESTADO }}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button
+                            <button @click="navigateToPage()"
                                 class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 m-auto dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800">
                                 Ver
                             </button>
@@ -129,6 +130,7 @@
 import { watch, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useGetCarrera } from '../composables/useEstudianteCarrera';
 import type { EstudianteCarreraResponseType } from '../types/estudiantesCarrera';
+import router from '@/router';
 
 const props = defineProps<{ carId: number }>();
 const carId = ref<number>(props.carId);
@@ -231,7 +233,10 @@ onUnmounted(() => {
     document.removeEventListener('mousedown', handleClickOutside);
 });
 
-
+//NAVERGAR A OTRA PAGINA 
+const navigateToPage = () => {
+  window.open('/titulacion-detalle-ver/', '_blank');
+};
 
 </script>
 
